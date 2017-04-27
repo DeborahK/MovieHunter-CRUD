@@ -10,7 +10,7 @@ import { IMovie } from './movie';
 
 @Injectable()
 export class MovieService {
-    private moviesUrl = 'src/app/movies/movies.json';
+    private moviesUrl = '/api/movies/movies.json';
 
     constructor(private http: Http) { }
 
