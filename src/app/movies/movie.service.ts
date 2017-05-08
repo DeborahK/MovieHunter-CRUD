@@ -1,30 +1,40 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/throw';
+
 import { IMovie } from './movie';
 
 @Injectable()
 export class MovieService {
-    private moviesUrl = '/api/movies/movies.json';
+    private moviesUrl = 'api/movies';
 
     constructor(private http: Http) { }
 
     getMovies(): Observable<IMovie[]> {
         return this.http.get(this.moviesUrl)
-            .map((res: Response) => <IMovie[]> res.json())
+            .map((res: Response) => <IMovie[]> res.json().data)
             .do(data => console.log(JSON.stringify(data)))
             .catch(this.handleError);
     }
 
     getMovie(id: number): Observable<IMovie> {
-        return this.http.get(this.moviesUrl)
-            .map((res: Response) => this.handleMap(res, id))
-            .do(data => console.log('Data: ' + JSON.stringify(data)))
+        if (id === 0) {
+            return Observable.of(this.initializeMovie());
+        };
+        const url = `${this.moviesUrl}/${id}`;
+        return this.http.get(url)
+            .map((res: Response) => {
+                let body = res.json();
+                return <IMovie[]> body.data || {};
+            })
+            .do(data => console.log(JSON.stringify(data)))
             .catch(this.handleError);
     }
 
@@ -35,24 +45,19 @@ export class MovieService {
         return Observable.throw(error.json().error || 'Server error');
     }
 
-    private handleMap(res: any, id: number) {
-        let data = <IMovie[]> res.json();
+    private initializeMovie(): IMovie {
         // Return an initialized object
-        if (id === 0) {
-            return {
-                'approvalRating': null,
-                'description': '',
-                'director': '',
-                'imageurl': '',
-                'movieId': 0,
-                'mpaa': '',
-                'price': null,
-                'releaseDate': '',
-                'starRating': null,
-                'title': ''
-            };
-        }
-        let filtered = data.filter(m => m.movieId === id);
-        return <IMovie> filtered[0];
+        return {
+            id: 0,
+            approvalRating: null,
+            description: '',
+            director: '',
+            imageurl: '',
+            mpaa: '',
+            price: null,
+            releaseDate: '',
+            starRating: null,
+            title: ''
+        };
     }
 }

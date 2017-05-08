@@ -67,7 +67,7 @@ export class MovieEditReactiveComponent implements OnInit {
     onMovieRetrieved(movie: IMovie) {
         this.movie = movie;
 
-        if (this.movie.movieId === 0) {
+        if (this.movie.id === 0) {
             this.pageTitle = 'Add Movie (Reactive)';
         } else {
             this.pageTitle = `Edit Movie (Reactive): ${this.movie.title}`;

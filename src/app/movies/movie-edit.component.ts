@@ -37,7 +37,7 @@ export class MovieEditComponent implements OnInit {
 
     onMovieRetrieved(movie: IMovie) {
         this.movie = movie;
-        if (this.movie.movieId === 0) {
+        if (this.movie.id === 0) {
             this.pageTitle = 'Add Movie (Template-driven)';
         } else {
             this.pageTitle = `Edit Movie (Template-driven): ${this.movie.title}`;
