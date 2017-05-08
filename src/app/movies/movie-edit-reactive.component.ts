@@ -19,9 +19,9 @@ export class MovieEditReactiveComponent implements OnInit {
     errorMessage: string;
 
     constructor(private fb: FormBuilder,
-                private movieService: MovieService,
-                private router: Router,
-                private route: ActivatedRoute) {
+        private movieService: MovieService,
+        private router: Router,
+        private route: ActivatedRoute) {
 
         // Initialize strings
         this.formError = {
@@ -43,7 +43,7 @@ export class MovieEditReactiveComponent implements OnInit {
                 'maxlength': 'Director cannot exceed 50 characters.'
             },
             'starRating': {
-                'mhRange': 'Rate the movie between 1 (lowest) and 5 (highest).'
+                'range': 'Rate the movie between 1 (lowest) and 5 (highest).'
             }
         };
     }
@@ -51,20 +51,20 @@ export class MovieEditReactiveComponent implements OnInit {
     ngOnInit(): void {
         this.route.params.subscribe(
             params => {
-                let id = +params['id'];
+                const id = +params['id'];
                 this.getMovie(id);
             }
         );
     }
 
-    getMovie(id: number) {
-        this.movieService.getMovie(id)
-            .subscribe(
+    getMovie(id: number): void {
+        this.movieService.getMovie(id).subscribe(
             movie => this.onMovieRetrieved(movie),
-            error => this.errorMessage = <any>error);
+            error => this.errorMessage = <any>error
+        );
     }
 
-    onMovieRetrieved(movie: IMovie) {
+    onMovieRetrieved(movie: IMovie): void {
         this.movie = movie;
 
         if (this.movie.id === 0) {
@@ -75,11 +75,11 @@ export class MovieEditReactiveComponent implements OnInit {
 
         this.editForm = this.fb.group({
             'title': [this.movie.title, [Validators.required,
-                                         Validators.minLength(3),
-                                         Validators.maxLength(50)]],
+                                        Validators.minLength(3),
+                                        Validators.maxLength(50)]],
             'director': [this.movie.director, [Validators.required,
-                                               Validators.minLength(5),
-                                               Validators.maxLength(50)]],
+                                        Validators.minLength(5),
+                                        Validators.maxLength(50)]],
             'starRating': [this.movie.starRating, NumberValidators.range(1, 5)],
             'description': [this.movie.description]
         });
@@ -91,14 +91,15 @@ export class MovieEditReactiveComponent implements OnInit {
         //         .subscribe(data => this.onValueChanged(data));
     }
 
-    onValueChanged(data: any) {
-        for (let field in this.formError) {
+    // Start of a generic validator
+    onValueChanged(data: any): void {
+        for (const field in this.formError) {
             if (this.formError.hasOwnProperty(field)) {
-                let hasError = this.editForm.controls[field].dirty &&
+                const hasError = this.editForm.controls[field].dirty &&
                     !this.editForm.controls[field].valid;
                 this.formError[field] = '';
                 if (hasError) {
-                    for (let key in this.editForm.controls[field].errors) {
+                    for (const key in this.editForm.controls[field].errors) {
                         if (this.editForm.controls[field].errors.hasOwnProperty(key)) {
                             this.formError[field] += this.validationMessages[field][key] + ' ';
                         }
@@ -108,11 +109,24 @@ export class MovieEditReactiveComponent implements OnInit {
         }
     }
 
-    saveMovie() {
+    saveMovie(): void {
         console.log(this.editForm);
         if (this.editForm.dirty && this.editForm.valid) {
-            this.movie = this.editForm.value;
-            alert(`Movie: ${JSON.stringify(this.editForm.value)}`);
+            // Copy the form values over the product object values
+            const m = Object.assign({}, this.movie, this.editForm.value);
+
+            this.movieService.saveMovie(m).subscribe(
+                () => this.onSaveComplete(),
+                (error: any) => this.errorMessage = <any>error
+            );
+        } else if (!this.editForm.dirty) {
+            this.onSaveComplete();
         }
+    }
+
+    onSaveComplete(): void {
+        // Reset the form to clear the flags
+        this.editForm.reset();
+        this.router.navigate(['/movies']);
     }
 }

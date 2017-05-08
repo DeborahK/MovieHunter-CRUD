@@ -38,13 +38,10 @@
   },
   "lint": [
     {
-      "project": "src/tsconfig.app.json"
-    },
-    {
-      "project": "src/tsconfig.spec.json"
-    },
-    {
-      "project": "e2e/tsconfig.e2e.json"
+      "project": "src/tsconfig.app.json",
+      "exclude": [
+        "**/movie-data.*"
+      ]
     }
   ],
   "test": {

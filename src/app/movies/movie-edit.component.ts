@@ -28,13 +28,13 @@ export class MovieEditComponent implements OnInit {
         );
     }
 
-    deleteProduct(): void {
+    deleteMovie(): void {
         if (this.movie.id === 0) {
             // Don't delete, it was never saved.
             this.onSaveComplete();
         } else {
             if (confirm(`Really delete the movie: ${this.movie.title}?`)) {
-                this.movieService.deleteProduct(this.movie.id).subscribe(
+                this.movieService.deleteMovie(this.movie.id).subscribe(
                     () => this.onSaveComplete(),
                     (error: any) => this.errorMessage = <any>error
                 );
@@ -42,14 +42,14 @@ export class MovieEditComponent implements OnInit {
         }
     }
 
-    getMovie(id: number) {
+    getMovie(id: number): void {
         this.movieService.getMovie(id)
             .subscribe(
             movie => this.onMovieRetrieved(movie),
             error => this.errorMessage = <any>error);
     }
 
-    onMovieRetrieved(movie: IMovie) {
+    onMovieRetrieved(movie: IMovie): void {
         this.movie = movie;
         if (this.movie.id === 0) {
             this.pageTitle = 'Add Movie (Template-driven)';
@@ -63,10 +63,10 @@ export class MovieEditComponent implements OnInit {
         this.router.navigate(['/movies']);
     }
 
-    saveMovie(editForm: NgForm) {
+    saveMovie(editForm: NgForm): void {
         console.log(editForm);
         if (editForm.dirty && editForm.valid) {
-            this.movieService.saveProduct(this.movie)
+            this.movieService.saveMovie(this.movie)
                 .subscribe(
                 () => this.onSaveComplete(),
                 (error: any) => this.errorMessage = <any>error

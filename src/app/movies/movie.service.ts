@@ -38,7 +38,7 @@ export class MovieService {
             .catch(this.handleError);
     }
 
-    deleteProduct(id: number): Observable<Response> {
+    deleteMovie(id: number): Observable<Response> {
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const options = new RequestOptions({ headers: headers });
 
@@ -48,14 +48,14 @@ export class MovieService {
             .catch(this.handleError);
     }
 
-    saveProduct(product: IMovie): Observable<IMovie> {
+    saveMovie(movie: IMovie): Observable<IMovie> {
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const options = new RequestOptions({ headers: headers });
 
-        if (product.id === 0) {
-            return this.createMovie(product, options);
+        if (movie.id === 0) {
+            return this.createMovie(movie, options);
         }
-        return this.updateMovie(product, options);
+        return this.updateMovie(movie, options);
     }
 
     private createMovie(movie: IMovie, options: RequestOptions): Observable<IMovie> {

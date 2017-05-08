@@ -54,7 +54,7 @@
                         <td>{{ movie.mpaa | uppercase}}</td>
                         <td>{{ movie.price | currency:'USD':true}}</td>
                         <td>
-                            <app-star [rating]="movie.starRating"></app-star>
+                            <mh-star [rating]="movie.starRating"></mh-star>
                         </td>
                         <td>{{ movie.approvalRating | percent: '1.0-0'}}</td>
                         <td>
