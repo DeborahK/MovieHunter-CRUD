@@ -43,7 +43,7 @@ export class MovieEditReactiveComponent implements OnInit {
                 'maxlength': 'Director cannot exceed 50 characters.'
             },
             'starRating': {
-                'range': 'Rate the movie between 1 (lowest) and 5 (highest).'
+                'mhRange': 'Rate the movie between 1 (lowest) and 5 (highest).'
             }
         };
     }

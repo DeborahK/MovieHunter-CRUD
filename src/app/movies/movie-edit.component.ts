@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { IMovie } from './movie';
 import { MovieService } from './movie.service';
-import { RangeValidator } from '../shared/range.directive';
+import { RangeValidatorDirective } from '../shared/range.directive';
 
 @Component({
     templateUrl: './movie-edit.component.html'
@@ -14,22 +14,36 @@ export class MovieEditComponent implements OnInit {
     movie: IMovie;
     errorMessage: string;
 
-    constructor(private _movieService: MovieService,
-        private _router: Router,
-        private _route: ActivatedRoute) {
+    constructor(private movieService: MovieService,
+        private router: Router,
+        private route: ActivatedRoute) {
     }
 
     ngOnInit(): void {
-        this._route.params.subscribe(
+        this.route.params.subscribe(
             params => {
-                let id = +params['id'];
+                const id = +params['id'];
                 this.getMovie(id);
             }
         );
     }
 
+    deleteProduct(): void {
+        if (this.movie.id === 0) {
+            // Don't delete, it was never saved.
+            this.onSaveComplete();
+        } else {
+            if (confirm(`Really delete the movie: ${this.movie.title}?`)) {
+                this.movieService.deleteProduct(this.movie.id).subscribe(
+                    () => this.onSaveComplete(),
+                    (error: any) => this.errorMessage = <any>error
+                );
+            }
+        }
+    }
+
     getMovie(id: number) {
-        this._movieService.getMovie(id)
+        this.movieService.getMovie(id)
             .subscribe(
             movie => this.onMovieRetrieved(movie),
             error => this.errorMessage = <any>error);
@@ -44,10 +58,21 @@ export class MovieEditComponent implements OnInit {
         }
     }
 
+    onSaveComplete(): void {
+        // Navigate back to the movie list
+        this.router.navigate(['/movies']);
+    }
+
     saveMovie(editForm: NgForm) {
         console.log(editForm);
         if (editForm.dirty && editForm.valid) {
-            alert(`Movie: ${JSON.stringify(editForm.value)}`);
+            this.movieService.saveProduct(this.movie)
+                .subscribe(
+                () => this.onSaveComplete(),
+                (error: any) => this.errorMessage = <any>error
+                );
+        } else {
+            this.errorMessage = 'Please correct the validation errors.';
         }
     }
 }

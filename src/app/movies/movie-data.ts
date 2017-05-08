@@ -5,7 +5,7 @@ import { IMovie } from './movie';
 export class MovieData implements InMemoryDbService {
 
     createDb() {
-        let movies: IMovie[] = [
+        const movies: IMovie[] = [
             {
                 'id': 1,
                 'director': 'Peter Jackson',

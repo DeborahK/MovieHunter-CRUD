@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { MovieData } from './movies/movie-data';
 
-import { AppComponent }  from './app.component';
+import { AppComponent } from './app.component';
 import { WelcomeComponent } from './home/welcome.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 

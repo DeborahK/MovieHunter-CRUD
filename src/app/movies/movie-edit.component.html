@@ -77,7 +77,7 @@
                                 id="inputStarRating" 
                                 type="text" 
                                 placeholder="Rating"
-                                range="1,5"
+                                mhRange="1,5"
                                 [(ngModel)] = "movie.starRating"
                                 name="starRating"
                                 #starRatingVar = "ngModel" />
@@ -120,6 +120,12 @@
                                 Cancel
                             </a>
                         </span>
+                        <span>
+                            <a class="btn btn-default"
+                                (click)="deleteProduct()">
+                                Delete
+                            </a>
+                        </span>                          
                     </div>
                 </div>
             </fieldset>

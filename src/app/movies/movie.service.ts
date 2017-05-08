@@ -19,7 +19,7 @@ export class MovieService {
 
     getMovies(): Observable<IMovie[]> {
         return this.http.get(this.moviesUrl)
-            .map((res: Response) => <IMovie[]> res.json().data)
+            .map((res: Response) => <IMovie[]>res.json().data)
             .do(data => console.log(JSON.stringify(data)))
             .catch(this.handleError);
     }
@@ -31,10 +31,38 @@ export class MovieService {
         const url = `${this.moviesUrl}/${id}`;
         return this.http.get(url)
             .map((res: Response) => {
-                let body = res.json();
-                return <IMovie[]> body.data || {};
+                const body = res.json();
+                return <IMovie[]>body.data || {};
             })
             .do(data => console.log(JSON.stringify(data)))
+            .catch(this.handleError);
+    }
+
+    deleteProduct(id: number): Observable<Response> {
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const options = new RequestOptions({ headers: headers });
+
+        const url = `${this.moviesUrl}/${id}`;
+        return this.http.delete(url, options)
+            .do(data => console.log('deleteMovie: ' + JSON.stringify(data)))
+            .catch(this.handleError);
+    }
+
+    saveProduct(product: IMovie): Observable<IMovie> {
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const options = new RequestOptions({ headers: headers });
+
+        if (product.id === 0) {
+            return this.createMovie(product, options);
+        }
+        return this.updateMovie(product, options);
+    }
+
+    private createMovie(movie: IMovie, options: RequestOptions): Observable<IMovie> {
+        movie.id = undefined;
+        return this.http.post(this.moviesUrl, movie, options)
+            .map((res: Response) => <IMovie[]>res.json().data)
+            .do(data => console.log('createMovie: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
 
@@ -59,5 +87,13 @@ export class MovieService {
             starRating: null,
             title: ''
         };
+    }
+
+    private updateMovie(movie: IMovie, options: RequestOptions): Observable<IMovie> {
+        const url = `${this.moviesUrl}/${movie.id}`;
+        return this.http.put(url, movie, options)
+            .map(() => movie)
+            .do(data => console.log('updateMovie: ' + JSON.stringify(data)))
+            .catch(this.handleError);
     }
 }
