@@ -19,8 +19,8 @@ import { MovieService } from './movie.service';
     RouterModule.forChild([
       { path: 'movies', component: MovieListComponent },
       { path: 'movies/:id', component: MovieDetailComponent },
-      { path: 'movies/:id/editx', component: MovieEditComponent },
-      { path: 'movies/:id/edit', component: MovieEditReactiveComponent }
+      { path: 'movies/:id/edit', component: MovieEditComponent },
+      { path: 'movies/:id/editReactive', component: MovieEditReactiveComponent }
     ])
   ],
   declarations: [

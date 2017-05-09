@@ -65,6 +65,9 @@ export class MovieEditReactiveComponent implements OnInit {
     }
 
     onMovieRetrieved(movie: IMovie): void {
+        if (this.editForm) {
+            this.editForm.reset();
+        }
         this.movie = movie;
 
         if (this.movie.id === 0) {
