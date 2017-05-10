@@ -4,7 +4,8 @@
     </div>
 
     <div class="panel-body" *ngIf='movie'>
-        <form class="form-horizontal" 
+        <form class="form-horizontal"
+              novalidate
               #editForm="ngForm"  
               (ngSubmit)="saveMovie(editForm)">
             <fieldset>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { IMovie } from './movie';
@@ -76,6 +76,19 @@ export class MovieEditReactiveComponent implements OnInit {
             this.pageTitle = `Edit Movie (Reactive): ${this.movie.title}`;
         }
 
+        // Without FormBuilder
+        // this.editForm = new FormGroup({
+        //     title: new FormControl(this.movie.title, [Validators.required,
+        //                                               Validators.minLength(3),
+        //                                               Validators.maxLength(50)]),
+        //     director: new FormControl(this.movie.director, [Validators.required,
+        //                                                     Validators.minLength(5),
+        //                                                     Validators.maxLength(50)]),
+        //     starRating: new FormControl(this.movie.starRating, NumberValidators.range(1, 5)),
+        //     description: new FormControl(this.movie.description)
+        // });
+
+        // With FormBuilder
         this.editForm = this.fb.group({
             'title': [this.movie.title, [Validators.required,
                                          Validators.minLength(3),
