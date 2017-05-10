@@ -19,9 +19,9 @@ export class MovieEditReactiveComponent implements OnInit {
     errorMessage: string;
 
     constructor(private fb: FormBuilder,
-        private movieService: MovieService,
-        private router: Router,
-        private route: ActivatedRoute) {
+                private movieService: MovieService,
+                private router: Router,
+                private route: ActivatedRoute) {
 
         // Initialize strings
         this.formError = {
@@ -78,11 +78,11 @@ export class MovieEditReactiveComponent implements OnInit {
 
         this.editForm = this.fb.group({
             'title': [this.movie.title, [Validators.required,
-                                        Validators.minLength(3),
-                                        Validators.maxLength(50)]],
+                                         Validators.minLength(3),
+                                         Validators.maxLength(50)]],
             'director': [this.movie.director, [Validators.required,
-                                        Validators.minLength(5),
-                                        Validators.maxLength(50)]],
+                                               Validators.minLength(5),
+                                               Validators.maxLength(50)]],
             'starRating': [this.movie.starRating, NumberValidators.range(1, 5)],
             'description': [this.movie.description]
         });
@@ -115,7 +115,7 @@ export class MovieEditReactiveComponent implements OnInit {
     saveMovie(): void {
         console.log(this.editForm);
         if (this.editForm.dirty && this.editForm.valid) {
-            // Copy the form values over the product object values
+            // Copy the form values over the object values
             const m = Object.assign({}, this.movie, this.editForm.value);
 
             this.movieService.saveMovie(m).subscribe(

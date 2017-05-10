@@ -32,7 +32,7 @@ export class MovieService {
         return this.http.get(url)
             .map((res: Response) => {
                 const body = res.json();
-                return <IMovie[]>body.data || {};
+                return <IMovie>body.data || {};
             })
             .do(data => console.log(JSON.stringify(data)))
             .catch(this.handleError);

@@ -10,7 +10,7 @@ import { NumberValidators } from './number.validator';
   ]
 })
 export class RangeValidatorDirective {
-  private _validator: any;
+  private validator: any;
 
   constructor(@Attribute('mhRange') range: string) {
     const arr = range.split(',');
@@ -18,10 +18,10 @@ export class RangeValidatorDirective {
     let max = 10;
     if (arr[0]) { min = parseInt(arr[0], 10); };
     if (arr[1]) { max = parseInt(arr[1], 10); };
-    this._validator = NumberValidators.range(min, max);
+    this.validator = NumberValidators.range(min, max);
   }
 
   validate(c: AbstractControl): {[key: string]: any} {
-    return this._validator(c);
+    return this.validator(c);
   }
 }

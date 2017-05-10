@@ -43,10 +43,10 @@ export class MovieEditComponent implements OnInit {
     }
 
     getMovie(id: number): void {
-        this.movieService.getMovie(id)
-            .subscribe(
+        this.movieService.getMovie(id).subscribe(
             movie => this.onMovieRetrieved(movie),
-            error => this.errorMessage = <any>error);
+            error => this.errorMessage = <any>error
+        );
     }
 
     onMovieRetrieved(movie: IMovie): void {
@@ -66,11 +66,10 @@ export class MovieEditComponent implements OnInit {
     saveMovie(editForm: NgForm): void {
         console.log(editForm);
         if (editForm.dirty && editForm.valid) {
-            this.movieService.saveMovie(this.movie)
-                .subscribe(
+            this.movieService.saveMovie(this.movie).subscribe(
                 () => this.onSaveComplete(),
                 (error: any) => this.errorMessage = <any>error
-                );
+            );
         } else {
             this.errorMessage = 'Please correct the validation errors.';
         }
