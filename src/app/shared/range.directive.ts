@@ -3,6 +3,8 @@ import { NG_VALIDATORS, Validator, AbstractControl, ValidatorFn } from '@angular
 
 import { NumberValidators } from './number.validator';
 
+// HTML element must have *both* mhRange and ngModel on it
+// Add the RangeValidatorDirective to the set of built-in validators defined by NG_VALIDATORS
 @Directive({
     selector: '[mhRange][ngModel]',
     providers: [
